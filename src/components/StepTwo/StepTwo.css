@@ -1,0 +1,113 @@
+.previous-step-button {
+    height: 40px;
+    width: 130px;
+    border: none;
+    background: #3B5249;
+    border-radius: 4px;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+.previous-step-button:hover {
+    cursor: pointer
+}
+
+.previous-next-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 560px;
+
+}
+
+.step-two-input-container {
+    display: flex;
+    height: 250px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.city-state-input {
+    display: flex;
+    flex-direction: row;
+    width: 560px;
+    justify-content: space-between;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.address-input {
+    width: 560px;
+    height: 22px;
+    margin-bottom: 25px;
+    border: solid 1px #519872;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.city-input {
+    width: 200px;
+    height: 22px;
+    margin-bottom: 25px;
+    border: solid 1px #519872;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.state-input {
+    width: 200px;
+    height: 22px;
+    margin-bottom: 25px;
+    border: solid 1px #519872;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.zip-input {
+    width: 200px;
+    height: 22px;
+    border: solid 1px #519872;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.state-container {
+    margin-right: 60px;
+}
+
+.address {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.state {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.city {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.zip {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.checkmark img {
+    height: 15px;
+    margin-top: 7px;
+}

@@ -1,0 +1,9 @@
+.monthly-mortgage {
+   width: 560px;
+    height: 20px;
+    margin-bottom: 40px;
+    border: solid 1px #519872;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
