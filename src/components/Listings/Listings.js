@@ -3,19 +3,42 @@ import './Listings.css';
 import Header from '../Header/Header.js';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getHouses } from '../../ducks/reducer.js';
-import { deleteHouse } from '../../ducks/reducer.js';
+import { getHouses, deleteHouse, filterHouses } from '../../ducks/reducer.js';
 import xbutton from './001-letter-x.svg';
 
 class Listings extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            userDesiredRent: 0
+        }
+        this.resetListings = this.resetListings.bind(this)
+    }
 
     componentDidMount() {
         const { getHouses } = this.props;
         getHouses()
     }
 
+    getUserDesiredRent(value){
+        console.log(value)
+        this.setState({
+            userDesiredRent: value
+        })
+    }
+
+    resetListings(){
+        this.setState({
+            userDesiredRent: 0
+        })
+    }
+
+
     render() {
-        const houses = this.props.houses
+        const houses = this.state.userDesiredRent ? this.props.filteredHouses : this.props.houses
+        
+        
         return (
             <div>
                 <Header />
@@ -28,10 +51,10 @@ class Listings extends Component {
                             </div>
                             <div className="filter-container">
                                 <div className="filter-words">List properties with "desired rent" greater than: $</div>
-                                <div><input className="filter-price-input" placeholder="0" /></div>
+                                <div><input className="filter-price-input" placeholder="0" onChange={(e) => this.getUserDesiredRent(e.target.value)}/></div>
                                 <div className="filter-buttons-container">
-                                    <button className="filter-button">Filter</button>
-                                    <button className="reset-button">Reset</button>
+                                    <button className="filter-button" onClick={() => this.props.filterHouses(this.state.userDesiredRent)}>Filter</button>
+                                    <button className="reset-button" onClick={this.resetListings}>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +81,7 @@ class Listings extends Component {
                                         <div className="listing-detail">State: {element.id ? element.addressthree : null}</div>
                                         <div className="listing-detail">Zip: {element.id ? element.addressfour : null}</div>
                                     </div>
-                                    <div className="x-button-container" onClick={this.props.deleteHouse}>
+                                    <div className="x-button-container" onClick={() => this.props.deleteHouse(element.id)}>
                                     <img className="x-button" src={xbutton} alt=""/>
                                 </div>
                                     </div>
@@ -75,12 +98,14 @@ class Listings extends Component {
 }
 
 function mapStateToProps(state) {
-    const { houses, house } = state;
+    const { houses, house, filteredHouses } = state;
+
 
     return {
         houses,
-        house
+        house,
+        filteredHouses
     }
 }
 
-export default connect(mapStateToProps, { getHouses, deleteHouse })(Listings);
+export default connect(mapStateToProps, { getHouses, deleteHouse, filterHouses })(Listings);

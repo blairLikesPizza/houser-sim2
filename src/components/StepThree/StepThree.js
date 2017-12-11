@@ -7,6 +7,16 @@ import { updateImgURL } from '../../ducks/reducer.js';
 import checkmark from '../StepTwo/noun_1259726_cc.svg';
 
 class StepThree extends Component {
+
+updateImageField(){
+    if (this.props.imgURL){
+        return <img src={this.props.imgURL} alt="" className="image-preview-box"></img>
+    }
+    else {
+        return <div className="preview-box">Preview</div>
+    }
+}
+
     render(){
         const { updateImgURL } = this.props;
         return(
@@ -28,7 +38,8 @@ class StepThree extends Component {
                         <div className="circle"></div>
                     </div>
                     <div className="step-details-container">
-                        <div className="preview-box">Preview</div>
+                        
+                        {this.updateImageField()}
                         
                         <div className="image-url">Image URL</div>
                         <input className="image-input" onChange={(e) => updateImgURL(e.target.value)}/>

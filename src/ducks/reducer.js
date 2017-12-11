@@ -3,6 +3,8 @@ import axios from 'axios';
 const initialState = {
     houses: [],
     house: {},
+    filteredHouses: [],
+    user: {},
     recommendedRent: 0,
     propName: '',
     propDescription: '',
@@ -14,6 +16,7 @@ const initialState = {
     loan: 0,
     mortgage: 0,
     desiredRent: 0,
+    userDesiredRent: 0,
     listings: [],
     username: '',
     password: '',
@@ -40,6 +43,7 @@ const UPDATE_NEW_PASSWORD = "UPDATE_NEW_PASSWORD";
 const GET_HOUSES = "GET_HOUSES";
 const DELETE_HOUSE = "DELETE_HOUSE";
 const ADD_HOUSE = "ADD_HOUSE";
+const FILTER_HOUSES = "FILTER_HOUSES";
 
 function reducer(state = initialState, action){
     switch(action.type){
@@ -81,6 +85,8 @@ function reducer(state = initialState, action){
             return Object.assign({}, state, { house: action.payload })
         case ADD_HOUSE:
             return Object.assign({}, state, { house: action.payload })
+        case FILTER_HOUSES + '_FULFILLED':
+            return Object.assign({}, state, { filteredHouses: action.payload.data })
         default: return state;
     }
 }
@@ -209,12 +215,12 @@ export function getHouses(){
     }
 }
 
-export function deleteHouse(){
-    const deletedHouseData = axios.delete('/api/house/' + 1) //WORK ON THIS FRIDAY!!!!!!!!!! NEED TO GET THE ID SO YOU CAN DELETE STUFF! NOT JUST THE ONE WITH THE ID OF 3
+export function deleteHouse(id){
+    console.log('deleting house', id)
+    const deletedHouseData = axios.delete('/api/house/' + id) 
         .then(res => {
             return res.data
         })
-    console.log('delete house', deletedHouseData)
     return {
         type: DELETE_HOUSE,
         payload: deletedHouseData
@@ -231,6 +237,16 @@ export function addHouse(reqBody){
     return {
         type: ADD_HOUSE,
         payload: newHouseData
+    }
+}
+
+export function filterHouses(desiredRent){
+    console.log('filtering houses')
+    const filteredHouses = axios.get('/api/filteredhouses/' + desiredRent)
+    // console.log(filteredHouses)
+    return {
+        type: FILTER_HOUSES,
+        payload: filteredHouses
     }
 }
 

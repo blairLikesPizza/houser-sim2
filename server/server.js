@@ -22,24 +22,16 @@ massive(process.env.CONNECTION_STRING).then(db => {
   app.set('db', db)
 });
 
-app.get('/api/house', (req, res, next) => {
-    const db = app.get('db');
-    const { desiredRent } = req.query; 
-    if (isNaN(desiredRent)){
-      db.get_filtered_houses([0])
-        .then(houses => {
-          res.status(200).send(houses)
-        })
-        .catch(() => res.status(500).send("SERVER ERROR"));
-    } else {
+app.get('/api/filteredhouses/:desiredRent', (req, res, next) => {
       const db = app.get('db')
+      const desiredRent = req.params.desiredRent
+      console.log(desiredRent)
       db.get_filtered_houses([desiredRent])
         .then(houses => {
           res.status(200).send(houses)
         })
         .catch(() => res.status(500).send("SERVER ERROR"));
-    }
-  });
+    });
 
 app.get('/api/houses', (req, res, next) => {
     const db = app.get("db");
@@ -63,6 +55,15 @@ app.post('/api/addhouse', (req, res, next) => {
       );
   }
 );
+
+app.post('/api/adduser', (req, res, next) => {
+  const db = req.app.get('db');
+  const { username, password } = req.body;
+  db.create_user([username, password])
+     .then(user => {
+       res.status(200).send(user)
+     })
+})
 
 app.delete('/api/house/:id', (req, res, next) => {
     const db = req.app.get('db');
