@@ -1,8 +1,53 @@
 import React, { Component } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { addUser, getUser } from '../../ducks/reducer.js';
 
 class Login extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            username: '',
+            password: ''
+        }
+        this.getUsername = this.getUsername.bind(this);
+        this.getPassword = this.getPassword.bind(this);
+    }
+
+    createUser() {
+        const reqBody = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        this.props.addUser(reqBody);
+        console.log(reqBody)
+    }
+
+    loginUser(){
+        const reqBody = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        this.props.getUser(reqBody, this.props.history);
+        console.log(reqBody)
+    }
+
+    getUsername(value){
+        console.log(value)
+        this.setState({
+            username: value
+        })
+    }
+    
+    getPassword(value){
+        console.log(value)
+        this.setState({
+            password: value
+        })
+    }
+
     render() {
         return (
             <div className="login-root">
@@ -12,13 +57,13 @@ class Login extends Component {
                     </div>
                     <div className="login-input-container">
                         <p>Username</p>
-                        <input className="username-input" />
+                        <input className="username-input" onChange={(e) => this.getUsername(e.target.value)}/>
                         <p>Password</p>
-                        <input type="password" className="password-input" />
+                        <input type="password" className="password-input" onChange={(e) => this.getPassword(e.target.value)}/>
                     </div>
                     <div className="login-buttons-container">
-                        <Link to="/listings"><button className="login-button">Login</button></Link>
-                        <Link to="/listings"><button className="register-button">Register</button></Link>
+                          <button className="login-button" onClick={() => this.loginUser(this.state.username, this.state.password)}>Login</button> 
+                        <Link to="/listings"><button className="register-button" onClick={() => this.createUser(this.state.username, this.state.password)}>Register</button></Link>
                     </div>
                 </div>
             </div>
@@ -26,4 +71,12 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state){
+    const { user } = state
+
+    return {
+        user
+    }
+}
+
+export default connect(mapStateToProps, { addUser, getUser })(Login);

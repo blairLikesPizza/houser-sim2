@@ -42,7 +42,8 @@ class StepFive extends Component {
             imgURL: this.props.imgURL,
             loan: this.props.loan,
             mortgage: this.props.mortgage,
-            desiredRent: this.props.desiredRent
+            desiredRent: this.props.desiredRent,
+            userid: this.props.userid
         }
         this.props.addHouse(reqBody);
         console.log(reqBody)
@@ -86,7 +87,7 @@ class StepFive extends Component {
 
 function mapStateToProps(state) {
     console.log(state)
-    const { recommendedRent, propName, propDescription, addressOne, addressTwo, addressThree, addressFour, imgURL, loan, mortgage, desiredRent, house } = state;
+    const { recommendedRent, propName, propDescription, addressOne, addressTwo, addressThree, addressFour, imgURL, loan, mortgage, desiredRent, house, userid } = state;
 
     return {
         recommendedRent,
@@ -100,7 +101,8 @@ function mapStateToProps(state) {
         loan,
         mortgage,
         desiredRent,
-        house
+        house,
+        userid
     };
 }
 

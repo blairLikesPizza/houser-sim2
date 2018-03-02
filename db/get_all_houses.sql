@@ -1,1 +1,2 @@
-SELECT * FROM house;
+SELECT * FROM house
+WHERE userid = $1;

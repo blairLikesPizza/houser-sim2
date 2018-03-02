@@ -21,7 +21,8 @@ const initialState = {
     username: '',
     password: '',
     newName: '',
-    newPassword: ''
+    newPassword: '',
+    userid: 0
 }
 
 const UPDATE_RECOMMENDED_RENT = "UPDATE_RECOMMENDED_RENT";
@@ -44,8 +45,14 @@ const GET_HOUSES = "GET_HOUSES";
 const DELETE_HOUSE = "DELETE_HOUSE";
 const ADD_HOUSE = "ADD_HOUSE";
 const FILTER_HOUSES = "FILTER_HOUSES";
+const ADD_USER = "ADD_USER";
+const GET_USER = "GET_USER";
+const UPDATE_USER_ID = "UPDATE_USER_ID";
+const RESET_USER_ID = "RESET_USER_ID";
+
 
 function reducer(state = initialState, action){
+    console.log('action hitting the reducer', action)
     switch(action.type){
         case UPDATE_RECOMMENDED_RENT: 
             return Object.assign({}, state, { recommendedRent: action.payload })
@@ -87,6 +94,15 @@ function reducer(state = initialState, action){
             return Object.assign({}, state, { house: action.payload })
         case FILTER_HOUSES + '_FULFILLED':
             return Object.assign({}, state, { filteredHouses: action.payload.data })
+        case ADD_USER:
+            return Object.assign({}, state, { user: action.payload} )
+        case GET_USER + '_FULFILLED':
+            console.log('hello', action.payload)
+            return Object.assign({}, state, { userid: action.payload })
+        case UPDATE_USER_ID:
+            return Object.assign({}, state, { userid: action.payload })
+        case RESET_USER_ID: 
+            return Object.assign({}, state, { userid: action.payload })
         default: return state;
     }
 }
@@ -176,6 +192,7 @@ export function updateListings(listings) {
     }
 }
 
+
 export function loginName( username ){
     return {
         type: UPDATE_USERNAME,
@@ -204,9 +221,10 @@ export function registerPassword( newPassword ){
     }
 }
 
-export function getHouses(){
-    const houseData = axios.get('/api/houses')
+export function getHouses(userid){
+    const houseData = axios.get('/api/houses/' + userid)
         .then(res => {
+            console.log('user id = ', userid)
             return res.data
         })
     return {
@@ -233,20 +251,65 @@ export function addHouse(reqBody){
         .then(res => {
             return res.data
         })
-    // console.log(newHouseData)
+    console.log(newHouseData)
     return {
         type: ADD_HOUSE,
         payload: newHouseData
     }
 }
 
+export function addUser(reqBody){
+    console.log(reqBody)
+   const newUserData = axios.post('/api/adduser/' + reqBody.username + '/' + reqBody.password, reqBody)
+        .then(res => {
+            console.log(newUserData)
+            return res.data
+        })
+    return {
+        type: ADD_USER,
+        payload: newUserData
+    }
+}
+
+export function getUser(reqBody, history){
+    console.log(reqBody)
+   const userData = axios.post('/api/users', reqBody)
+       .then(res => {
+           console.log(res.data[0].userid)
+           setTimeout(() => history.push('/listings'), 20)
+           return res.data[0].userid
+       }) 
+    return {
+        type: GET_USER,
+        payload: userData
+    }
+}
+
 export function filterHouses(desiredRent){
-    console.log('filtering houses')
+    console.log('filtering houses', desiredRent)
     const filteredHouses = axios.get('/api/filteredhouses/' + desiredRent)
     // console.log(filteredHouses)
     return {
         type: FILTER_HOUSES,
         payload: filteredHouses
+    }
+}
+
+export function updateUserId(reqBody) { 
+    const currentUserId = axios.post('/api/users/', reqBody)
+       .then(res => {
+           return res.data.userid
+       })
+    return {
+        type: UPDATE_USER_ID,
+        payload: currentUserId
+    }
+}
+
+export function resetUserId(userid = 0){
+    return {
+        type: RESET_USER_ID,
+        payload: userid
     }
 }
 

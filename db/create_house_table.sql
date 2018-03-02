@@ -10,5 +10,6 @@ CREATE TABLE if not exists house (
     imgURL TEXT,
     loan DECIMAL(20, 2) NOT NULL,
     mortgage DECIMAL(20, 2) NOT NULL,
-    desiredRent DECIMAL(20, 2) NOT NULL
+    desiredRent DECIMAL(20, 2) NOT NULL,
+    userid INTEGER
 )

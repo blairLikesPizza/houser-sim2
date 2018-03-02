@@ -11,14 +11,17 @@ class Listings extends Component {
         super(props);
 
         this.state = {
-            userDesiredRent: 0
+            userDesiredRent: 0,
+            userid: this.props.userid
         }
-        this.resetListings = this.resetListings.bind(this)
+        this.resetListings = this.resetListings.bind(this);
     }
 
     componentDidMount() {
         const { getHouses } = this.props;
-        getHouses()
+        console.log('componentdidmountuserid',this.state.userid)
+        getHouses(this.state.userid)
+        // setUserId()
     }
 
     getUserDesiredRent(value){
@@ -98,13 +101,14 @@ class Listings extends Component {
 }
 
 function mapStateToProps(state) {
-    const { houses, house, filteredHouses } = state;
-
+    const { houses, house, filteredHouses, userid } = state;
+    console.log(state)
 
     return {
         houses,
         house,
-        filteredHouses
+        filteredHouses,
+        userid
     }
 }
 

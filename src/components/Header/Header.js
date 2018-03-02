@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { resetUserId } from '../../ducks/reducer.js';
+import { connect } from 'react-redux';
 
 class Header extends Component {
+
+signout(){
+    this.props.resetUserId()
+    axios.post('/api/signout')
+       .then(res => {
+          return res
+       })
+}
+
     render() {
         return (
             <div className="header-root">
@@ -13,7 +25,7 @@ class Header extends Component {
                         <p className="dashboard-word">Dashboard</p>
                     </div>
                     <div className="logout-header">
-                       <Link to="/"><p>Logout</p></Link>
+                       <Link to="/"><p onClick={this.signout.bind(this)}>Logout</p></Link>
                     </div>
                 </div>
 
@@ -22,4 +34,11 @@ class Header extends Component {
     }
 }
 
-export default Header;
+function mapStateToProps(state){
+    const { userid } = state
+    return {
+        userid
+    }
+}
+
+export default connect(mapStateToProps, { resetUserId })(Header);
